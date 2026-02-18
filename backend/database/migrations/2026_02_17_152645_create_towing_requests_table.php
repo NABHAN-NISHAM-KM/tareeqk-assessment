@@ -13,11 +13,15 @@ return new class extends Migration
     {
         Schema::create('towing_requests', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('customer_id')->nullable()->constrained('users')->onDelete('cascade');
+            $table->foreignId('driver_id')->nullable()->constrained('users')->onDelete('set null');
             $table->string('customer_name');
             $table->string('location');
+            $table->decimal('latitude', 10, 7)->nullable();
+            $table->decimal('longitude', 10, 7)->nullable();
             $table->text('note')->nullable();
             $table->enum('status', ['pending', 'assigned', 'completed'])
-                  ->default('pending');
+                ->default('pending');
             $table->timestamps();
         });
     }
